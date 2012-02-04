@@ -1,14 +1,28 @@
-{text: '', "children": [
-    {
-		id: 1,
-		name: 'BCG',
-		address: '',
-		state: ''
-	},
-	{
-		id: 2,
-		name: 'Apple',
-		address: '',
-		state: ''
-	}
-]}
+{
+        text: 'Root',
+        expanded: true,
+        children: [
+            {
+            	id: 'Child 1',
+                text: 'Child 1',
+                leaf: true
+            },
+            {
+                text: 'Child 2',
+                leaf: true,
+                aName: 'Child 2'
+            },
+            {
+                text: 'Child 3',
+                expanded: true,
+                aName: 'Child 3',
+                children: [
+                    {
+                        text: 'Grandchild',
+                        leaf: true,
+                        aName: 'Grandchild',
+                    }
+                ]
+            }
+        ]
+    }

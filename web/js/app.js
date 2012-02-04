@@ -8,28 +8,16 @@ Ext.require([
 
 Ext.Loader.onReady(function() {
 	Ext.define('Agency', {
-	    extend: 'Ext.data.Model',
-	    fields: ['id', 'name', 'address', 'state']
+	    extend: 'Ext.data.NodeInterface',
+	    fields: ['id', 'aName', 'address', 'state']
 	});
 	
 	Ext.define('App.AgencyStore', {
         extend: 'Ext.data.TreeStore',
-        constructor: function(config) {
-            config = config || {};
-
-            config.model = 'Agency';
-            config.proxy = {
-                type: 'ajax',
-                url: 'js/json/agencyTree.json'
-            };
-            config.sorters =  [{
-                property: 'id',
-                direction: 'ASC'
-            }, {
-                property: 'name',
-                direction: 'ASC'
-            }]
-            this.callParent([config]);
+        model: 'Agency',
+    	proxy: {
+            type: 'ajax',
+            url: 'js/json/agencyTree.json'
         }
     });
 	
@@ -52,7 +40,7 @@ Ext.Loader.onReady(function() {
         alias: 'widget.agencydetail',
         tplMarkup: [
             'ID: {id}',
-            'Name: {name}<br/>'
+            'Name: {text}<br/>'
         ],
         startingMarkup: 'Please select an agency for details',
 
@@ -123,5 +111,4 @@ Ext.onReady(function() {
     var agencyApp = new App.AgencyMasterDetail({
         renderTo: 'agency-central'
     });
-    Ext.data.StoreManager.get('gridAgencyStore').load();
 });

@@ -1,5 +1,4 @@
 Ext.require([
-	'Ext.tree.*',
     'Ext.grid.*',
     'Ext.data.*',
     'Ext.panel.*',
@@ -8,39 +7,42 @@ Ext.require([
 
 Ext.Loader.onReady(function() {
 	Ext.define('Agency', {
-	    extend: 'Ext.data.NodeInterface',
-	    fields: ['id', 'aName', 'address', 'state']
+	    extend: 'Ext.data.Model',
+	    fields: ['id', 'name', 'address', 'state']
 	});
 	
 	Ext.define('App.AgencyStore', {
-        extend: 'Ext.data.TreeStore',
+        extend: 'Ext.data.Store',
         model: 'Agency',
     	proxy: {
             type: 'ajax',
-            url: 'js/json/agencyTree.json'
+            url: 'js/json/agencies.json'
         }
     });
 	
 	Ext.define('App.AgencyGrid', {
-	    extend: 'Ext.tree.Panel',
+	    extend: 'Ext.grid.Panel',
 	    alias: 'widget.agencygrid',
-	
+	    title: 'Agencies',
 	    initComponent : function() {
 
 	        this.store = new App.AgencyStore({
-	            storeId: 'gridAgencyStore',
-	            url: 'js/json/agencyTree.json'
+	            storeId: 'gridAgencyStore'
 	        });
 	        this.callParent();
-	     }
+	    },
+	    columns: [
+	        { flex:  1,  header: "Name", sortable: true, dataIndex: 'name'}
+	    ]
 	 });
 	 
 	 Ext.define('App.AgencyDetail', {
         extend: 'Ext.Panel',
+        title: 'Information',
         alias: 'widget.agencydetail',
         tplMarkup: [
             'ID: {id}',
-            'Name: {text}<br/>'
+            'Name: {name}<br/>'
         ],
         startingMarkup: 'Please select an agency for details',
 
@@ -58,27 +60,35 @@ Ext.Loader.onReady(function() {
             this.tpl.overwrite(this.body, data);
         }
     });
+	 
+	 Ext.define('App.AgencyTabs', {
+	        extend: 'Ext.tab.Panel',
+	        alias: 'widget.agencytabs',
+	        activeTab: 0,
+	        items: [
+		        {
+	                xtype: 'agencydetail',
+	            }
+		    ]
+	    });
 	
 	Ext.define('App.AgencyMasterDetail', {
         extend: 'Ext.Panel',
         alias: 'widget.agencymasterdetail',
 
-        frame: true,
-        title: 'Agency List',
         height: 500,
         layout: 'border',
+        bodyPadding: '5',
         initComponent: function() {
             this.items = [{
                 xtype: 'agencygrid',
                 itemId: 'gridPanel',
                 region: 'west',
                 width: '33%',
-                height: 500,
-                rootVisible: false,
                 split: true
             },{
-                xtype: 'agencydetail',
-                itemId: 'detailPanel',
+                xtype: 'agencytabs',
+                itemId: 'tabPanel',
                 region: 'center'
             }];
             this.callParent();
@@ -91,7 +101,7 @@ Ext.Loader.onReady(function() {
                 var detailPanel = Ext.getCmp('detailPanel');
                 bookTpl.overwrite(detailPanel.body, rs[0].data);
             }
-        })
+        });
             bookGridSm.on('selectionchange', this.onRowSelect, this);
         },
         onRowSelect: function(sm, rs) {
@@ -107,8 +117,8 @@ Ext.Loader.onReady(function() {
 
 
 Ext.onReady(function() {
-    // create an instance of the app
-    var agencyApp = new App.AgencyMasterDetail({
+    new App.AgencyMasterDetail({
         renderTo: 'agency-central'
     });
+    Ext.data.StoreManager.get('gridAgencyStore').load();
 });

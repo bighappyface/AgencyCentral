@@ -1,6 +1,4 @@
-{
-    agencies: [
-	    { id: 1, name: 'BCG' },
-	    { id: 2, name: 'Apple' }
-    ]
-}
+[
+	{ id: 1, name: 'BCG' },
+	{ id: 2, name: 'Apple' }
+]

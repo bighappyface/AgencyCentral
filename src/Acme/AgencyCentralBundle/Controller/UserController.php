@@ -11,9 +11,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
-  * @Route("/agency")
+  * @Route("/user")
   */
-class AgencyController extends AbstractController
+class UserController extends Controller
 {
 	/**
 	* @Route("/create")
@@ -44,23 +44,24 @@ class AgencyController extends AbstractController
 	*/
 	public function listAction()
 	{
-		$agencies = $this->get('doctrine.odm.mongodb.document_manager')
-	        			->getRepository('AcmeAgencyCentralBundle:Agency')
-	        			->findAll();
+		$users = $this->get('doctrine.odm.mongodb.document_manager')
+	        		  ->getRepository('AcmeAgencyCentralBundle:User')
+	        		  ->findAll();
 		
-	    if (!$agencies) {
-	        throw $this->createNotFoundException('No agencies found');
+	    if (!$users) {
+	        throw $this->createNotFoundException('No users found');
 	    }
-	    $agencies = $this->prepareMongoDataForJSON($agencies);
-	    $userRepo = $this->get('doctrine.odm.mongodb.document_manager')
-	    	             ->getRepository('AcmeAgencyCentralBundle:User');
-	    foreach($agencies as &$agency){
-	    	$users = $userRepo->findByAgency($agency['id']);
-	    	if($users->count() > 0){
-	    		$agency['users'] = $this->prepareMongoDataForJSON($users);
+	    $out = array();
+	    while($users->hasNext()){
+	    	$itemArr = (array) $users->getNext();
+	    	$itemArrFinal = array();
+	    	foreach($itemArr as $k => $v){
+	    		$k = \trim(\str_replace('*', '', $k));
+	    		$itemArrFinal[$k] = $v;
 	    	}
+	    	$out[] = $itemArrFinal;
 	    }
-	    return new Response(json_encode($agencies), 200, array('Content-Type' => 'application/json'));
+	    return new Response(json_encode($out), 200, array('Content-Type' => 'application/json'));
 	}
 	
     /**
@@ -70,7 +71,7 @@ class AgencyController extends AbstractController
       */
     public function indexAction($id)
     {
-	    die('get agency');
+	    die('get user');
     }
     
     

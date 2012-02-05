@@ -16,7 +16,6 @@ class Agency
 	 * @MongoDB\String
 	 */
 	protected $name;
-
     /**
      * Get id
      *
@@ -26,7 +25,6 @@ class Agency
     {
         return $this->id;
     }
-
     /**
      * Set name
      *
@@ -36,7 +34,6 @@ class Agency
     {
         $this->name = $name;
     }
-
     /**
      * Get name
      *

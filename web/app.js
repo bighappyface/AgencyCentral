@@ -4,8 +4,8 @@ Ext.application({
     appFolder: 'app',
     controllers: [
         'Front',
+        'User',
         'Agency',
-        'Users'
     ],
     launch: function() {
     	

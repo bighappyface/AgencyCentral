@@ -20,13 +20,38 @@ class AgencyController extends Controller
 	public function createAction()
 	{
 		$agency = new Agency();
-		$agency->setName('David');
+		$agency->setName('Mills');
 	
 		$dm = $this->get('doctrine.odm.mongodb.document_manager');
 		$dm->persist($agency);
 		$dm->flush();
 	
 		return new Response('Created agency id '.$agency->getId());
+	}
+	
+	/**
+	* @Route("/list")
+	*/
+	public function listAction()
+	{
+		$agencies = $this->get('doctrine.odm.mongodb.document_manager')
+	        			->getRepository('AcmeAgencyCentralBundle:Agency')
+	        			->findAll();
+		
+	    if (!$agencies) {
+	        throw $this->createNotFoundException('No agencies found');
+	    }
+	    $out = array();
+	    while($agencies->hasNext()){
+	    	$itemArr = (array) $agencies->getNext();
+	    	$itemArrFinal = array();
+	    	foreach($itemArr as $k => $v){
+	    		$k = \trim(\str_replace('*', '', $k));
+	    		$itemArrFinal[$k] = $v;
+	    	}
+	    	$out[] = $itemArrFinal;
+	    }
+	    return new Response(json_encode($out), 200, array('Content-Type' => 'application/json'));
 	}
 	
     /**
@@ -36,7 +61,7 @@ class AgencyController extends Controller
       */
     public function indexAction($id)
     {
-        return array('id' => $id);
+	    die('get agency');
     }
     
     

@@ -1,4 +1,4 @@
 Ext.define('AgencyCentral.model.User', {
 	extend: 'Ext.data.Model',
-	fields: ['id','name','email']
+	fields: ['id','name','email','allowEdit']
 });

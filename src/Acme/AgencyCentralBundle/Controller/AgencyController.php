@@ -13,56 +13,40 @@ use Symfony\Component\HttpFoundation\Response;
 /**
   * @Route("/agency")
   */
-class AgencyController extends AbstractController
+class AgencyController
+extends AbstractController
 {
+	protected $_dmRepo = 'AcmeAgencyCentralBundle:Agency';
 	/**
-	* @Route("/create")
-	*/
+	 * @Route("/create")
+	 */
 	public function createAction()
 	{
-		$agency = new Agency();
-		$agency->setName('Third');
 		
-		$dm = $this->get('doctrine.odm.mongodb.document_manager');
-		$dm->persist($agency);
-		$dm->flush();
-		
-		$user = new User();
-		$user->setName('David Porter');
-		$user->setEmail('anomalous20@gmail.com');
-		$user->setPassword('password');
-		$user->setAgency($agency);
-		
-		$dm->persist($user);
-		$dm->flush();
-	
-		return new Response('Created agency id '.$agency->getId());
 	}
-	
 	/**
-	* @Route("/list")
-	*/
+	 * @Route("/list")
+	 */
 	public function listAction()
 	{
-		$agencies = $this->get('doctrine.odm.mongodb.document_manager')
-	        			->getRepository('AcmeAgencyCentralBundle:Agency')
-	        			->findAll();
+		$agencies = $this->getRepo()->findAll();
 		
 	    if (!$agencies) {
 	        throw $this->createNotFoundException('No agencies found');
 	    }
-	    $agencies = $this->prepareMongoDataForJSON($agencies);
-	    $userRepo = $this->get('doctrine.odm.mongodb.document_manager')
-	    	             ->getRepository('AcmeAgencyCentralBundle:User');
-	    foreach($agencies as &$agency){
-	    	$users = $userRepo->findByAgency($agency['id']);
-	    	if($users->count() > 0){
-	    		$agency['users'] = $this->prepareMongoDataForJSON($users);
-	    	}
+	    $agencies = $this->prepareMongoDataForJson($agencies);
+	    if (!$this->get('security.context')->isGranted('ROLE_USER')) {
+	    	$userRepo = $this->get('doctrine.odm.mongodb.document_manager')
+	    					 ->getRepository('AcmeAgencyCentralBundle:User');
+		    foreach($agencies as &$agency){
+		    	$users = $userRepo->findByAgency($agency['id']);
+		    	if($users->count() > 0){
+		    		$agency['users'] = $this->prepareMongoDataForJson($users);
+		    	}
+		    }
 	    }
-	    return new Response(json_encode($agencies), 200, array('Content-Type' => 'application/json'));
+	    return $this->jsonResponse($agencies);
 	}
-	
     /**
       * @Route("/", defaults={"id" = 1})
  	  * @Route("/{id}")
@@ -72,6 +56,4 @@ class AgencyController extends AbstractController
     {
 	    die('get agency');
     }
-    
-    
 }

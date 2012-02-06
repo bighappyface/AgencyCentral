@@ -3,6 +3,8 @@ Ext.define('AgencyCentral.view.user.Edit', {
 	alias: 'widget.userEdit',
 	title: 'Edit User',
 	layout: 'fit',
+	modal: true,
+    draggable: false,
 	autoShow: true,
 	initComponent: function() {
 		this.items = [

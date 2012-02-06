@@ -17,6 +17,10 @@ Ext.define('AgencyCentral.controller.Agency', {
 		});
 	},
 	updateAgencyDetails: function(grid, record) {
+		var tabs = Ext.getCmp('agencyTabs');
+		var users = tabs.child('#agencyUsersPanel');
+	    tabs.setActiveTab( tabs.child('#agencyInfoPanel') );
+	    (record.data.users) ? users.tab.show() : users.tab.hide();
 		Ext.getCmp('agencyInfoPanel').updateDetail(record.data);
 	},
 	editAgency: function(grid, record) {

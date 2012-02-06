@@ -21,13 +21,13 @@ Ext.define('AgencyCentral.view.front.Main', {
 			    xtype: 'toolbar',
 			    split: true,
 			    items: [{
-			        text: 'Sign In',
+			        text: 'Login',
 			        scope: this,
-			        handler: this.signIn
+			        handler: this.showLogin
 			    }, {
 			        text: 'Register',
 			        scope: this,
-			        handler: this.register
+			        handler: this.showRegister
 			    }]
 			},
 	        {
@@ -40,12 +40,19 @@ Ext.define('AgencyCentral.view.front.Main', {
 	        {
 	        	region: 'center',
 	            xtype: 'tabpanel',
+	            id: 'agencyTabs',
 	            items: [
 	                {xtype: 'agencyInfo', id: 'agencyInfoPanel'},
-	                {xtype: 'agencyUsers'}
+	                {xtype: 'agencyUsers', id: 'agencyUsersPanel', hidden: true}
 		        ]
 	        }
 	    ];
 		this.callParent(arguments);
+	},
+	showLogin: function(button, data) {
+		Ext.widget('frontLogin').down('form').load();
+	},
+	showRegister: function(button, data) {
+		Ext.widget('userRegister').down('form').load();
 	}
 });

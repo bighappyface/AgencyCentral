@@ -1,6 +1,6 @@
 Ext.define('AgencyCentral.controller.User', {
 	extend: 'Ext.app.Controller',
-	models: ['User'],
+	models: ['User', 'FieldError'],
 	views: [
 	    'user.List',
 	    'user.Edit',

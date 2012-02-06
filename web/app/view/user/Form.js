@@ -39,9 +39,15 @@ Ext.define('AgencyCentral.view.user.Form', {
                 }
             },
             {
-            	xtype: 'hiddenfield',
-            	name: 'registration[_token]',
-            	value: '8bc8ffabac12b874d464b7b6abe8c072ebc15bd1'
+                xtype: 'combobox',
+                fieldLabel: 'Agency',
+                name: 'registration[user][agency]',
+                store: 'Agencies',
+                valueField: 'id',
+                displayField: 'name',
+                typeAhead: true,
+                queryMode: 'local',
+                emptyText: 'Select an Agency'
             }
 		];
 		this.callParent(arguments);

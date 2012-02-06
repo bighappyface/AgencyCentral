@@ -2,15 +2,15 @@
 namespace Acme\AgencyCentralBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilder;
 
-class RegistrationType
+class LoginType
 extends AbstractType
 {
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $builder->add('user', new UserType());
+        $builder->add('email', 'email');
+		$builder->add('password', 'password');
     }
     
     public function getDefaultOptions(array $options)
@@ -22,6 +22,6 @@ extends AbstractType
 
     public function getName()
     {
-        return 'registration';
+        return 'login';
     }
 }

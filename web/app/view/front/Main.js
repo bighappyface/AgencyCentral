@@ -50,9 +50,9 @@ Ext.define('AgencyCentral.view.front.Main', {
 		this.callParent(arguments);
 	},
 	showLogin: function(button, data) {
-		Ext.widget('frontLogin').down('form').load();
+		Ext.widget('frontLogin').show();
 	},
 	showRegister: function(button, data) {
-		Ext.widget('userRegister').down('form').load();
+		Ext.widget('userRegister').show();
 	}
 });

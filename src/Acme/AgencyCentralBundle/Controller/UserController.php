@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Acme\AgencyCentralBundle\Form\Type\RegistrationType;
 use Acme\AgencyCentralBundle\Form\Model\Registration;
+use Acme\AgencyCentralBundle\Form\Type\LoginType;
+use Acme\AgencyCentralBundle\Form\Model\Login;
 
 /**
   * @Route("/user")
@@ -17,22 +19,63 @@ extends AbstractController
 {
 	protected $_dmRepo = 'AcmeAgencyCentralBundle:User';
 	/**
+	* @Route("/login")
+	*/
+	public function loginAction()
+	{
+		if ($this->getRequest()->getMethod() == 'POST'){
+			$result = array(
+				'success' => false,
+				'field' => array(
+    		    	'id' => 'email',
+    		    	'msg' => 'No user registered with that e-mail'
+				)
+			);
+			$form = $this->createForm(new LoginType(), new Login());
+			$form->bindRequest($this->getRequest());
+			if($form->isValid()){
+				$formData = $form->getData();
+				$user = $this->getRepo()->findOneByEmail( $formData->getEmail() );
+				if($user){
+					if($user->getPassword() == $formData->getPassword()){
+						$this->getRequest()->getSession()->set('user', $user);
+						$result['success'] = true;
+					}
+				}
+			}
+			return $this->jsonResponse($result);
+		}
+		$form = $this->createForm(new LoginType(), new Login());
+		return $this->render('AcmeAgencyCentralBundle:User:login.html.twig', array('form' => $form->createView()));
+	}
+	/**
+	* @Route("/login-check")
+	*/
+	public function loginCheckAction()
+	{
+		$sessionUser = $this->getRequest()->getSession()->get('user');
+		die(var_dump( $sessionUser ));
+		return $this->jsonResponse(array('loggedIn' => false));
+	}
+	/**
 	 * @Route("/create")
 	 */
 	public function createAction()
 	{
-		$result = array('success' => false);
+		$result = array('success' => false, 'field' => array());
 		$form = $this->createForm(new RegistrationType(), new Registration());
     	$form->bindRequest($this->getRequest());
     	if ($form->isValid()) {
     		$registration = $form->getData();
-    		$this->getDm()->persist($registration->getUser());
+    		$user = $registration->getUser();
+    		$this->getDm()->persist($user);
     		$this->getDm()->flush();
     		$result['success'] = true;
+    		$this->getRequest()->getSession()->set('user', $user);
     	}else{
     		$formData = $form->getData();
-    		if($this->getRepo()->findOneByEmail($formData->getUser()->getEmail())){
-    			$result['errors']['field'] = array(
+    		if($this->getRepo()->findOneByEmail( $formData->getUser()->getEmail() )){
+    			$result['field'] = array(
     				'id' => 'email',
     				'msg' => 'E-mail address already registered'
     			);
@@ -40,7 +83,6 @@ extends AbstractController
     	}
     	return $this->jsonResponse($result);
 	}
-	
 	/**
 	 * @Route("/list")
 	 */
@@ -70,7 +112,6 @@ extends AbstractController
     	$form = $this->createForm(new RegistrationType(), new Registration());
     	return $this->render('AcmeAgencyCentralBundle:User:register.html.twig', array('form' => $form->createView()));
     }
-    
     /**
      * @Route("/", defaults={"id" = 1})
      * @Route("/{id}")

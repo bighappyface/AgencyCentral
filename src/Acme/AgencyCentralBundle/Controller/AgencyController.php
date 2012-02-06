@@ -35,13 +35,19 @@ extends AbstractController
 	        throw $this->createNotFoundException('No agencies found');
 	    }
 	    $agencies = $this->prepareMongoDataForJson($agencies);
-	    if (!$this->get('security.context')->isGranted('ROLE_USER')) {
-	    	$userRepo = $this->get('doctrine.odm.mongodb.document_manager')
+	    $sessionUser = $this->getRequest()->getSession()->get('user');
+	    if ($sessionUser) {
+	    	$userRepo = $this->getDm()
 	    					 ->getRepository('AcmeAgencyCentralBundle:User');
 		    foreach($agencies as &$agency){
 		    	$users = $userRepo->findByAgency($agency['id']);
 		    	if($users->count() > 0){
-		    		$agency['users'] = $this->prepareMongoDataForJson($users);
+		    		$users = $this->prepareMongoDataForJson($users);
+		    		foreach($users as &$user){
+		    			$user['allowEdit'] = ($sessionUser->getAgency() == $agency['id']);
+		    			unset($user['password']);
+		    		}
+		    		$agency['users'] = $users;
 		    	}
 		    }
 	    }

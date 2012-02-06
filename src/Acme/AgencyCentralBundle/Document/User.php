@@ -33,7 +33,7 @@ class User
 	 * @MongoDB\String
 	 * @Assert\NotBlank()
 	 */
-	protected $password;
+	private $password;
     /**
      * Get id
      *
@@ -106,5 +106,19 @@ class User
     public function getPassword()
     {
     	return $this->password;
+    }
+    /**
+     * To Array
+     * 
+	 * @return array
+     */
+    public function toArray()
+    {
+    	$ref = new \ReflectionClass($this);
+    	$arr = array();
+    	foreach($ref->getProperties( \ReflectionProperty::IS_PROTECTED ) as $prop){
+    		$arr[ $prop->getName() ] = $this->{'get' . \ucfirst($prop->getName())}();
+    	}
+    	return $arr;
     }
 }

@@ -8,6 +8,6 @@ Ext.application({
         'Agency',
     ],
     launch: function() {
-    	
+		Ext.getCmp('frontMain').checkLogin();
     }
 });

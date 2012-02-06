@@ -49,13 +49,22 @@ extends AbstractController
 		return $this->render('AcmeAgencyCentralBundle:User:login.html.twig', array('form' => $form->createView()));
 	}
 	/**
-	* @Route("/login-check")
-	*/
+	 * @Route("/login-check")
+	 */
 	public function loginCheckAction()
 	{
 		$sessionUser = $this->getRequest()->getSession()->get('user');
-		die(var_dump( $sessionUser ));
-		return $this->jsonResponse(array('loggedIn' => false));
+		$sessionUser = ($sessionUser == null) ? false : $sessionUser->toArray();
+		return $this->jsonResponse(array('user' => $sessionUser));
+	}
+	/**
+	 * @Route("/logout")
+	 */
+	public function logoutAction()
+	{
+		$this->getRequest()->getSession()->set('user', null);
+		$result = array('success' => true);
+		return $this->jsonResponse($result);
 	}
 	/**
 	 * @Route("/create")

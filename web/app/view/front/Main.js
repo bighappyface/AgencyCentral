@@ -1,12 +1,13 @@
 Ext.define('AgencyCentral.view.front.Main', {
 	extend: 'Ext.panel.Panel',
 	alias: 'widget.frontMain',
+	id: 'frontMain',
 	renderTo: Ext.getBody(),
 	initComponent: function() {
 		this.title = 'Agency Central';
 		this.layout = {
 			type: 'border',
-			align: 'stretch',
+			align: 'stretch'
 		};
 		this.frame = true;
 		this.width = 800;
@@ -19,15 +20,27 @@ Ext.define('AgencyCentral.view.front.Main', {
 			{
 				region: 'north',
 			    xtype: 'toolbar',
+			    id: 'topToolbar',
 			    split: true,
 			    items: [{
 			        text: 'Login',
+			        id: 'loginButton',
 			        scope: this,
-			        handler: this.showLogin
+			        handler: this.showLogin,
+			        iconCls: 'icon-lock'
 			    }, {
 			        text: 'Register',
+			        id: 'registerButton',
 			        scope: this,
-			        handler: this.showRegister
+			        handler: this.showRegister,
+			        iconCls: 'icon-user-add'
+			    }, {
+			        text: 'Logout',
+			        id: 'logoutButton',
+			        scope: this,
+			        handler: this.showLogout,
+			        iconCls: 'icon-disconnect',
+			        hidden: true
 			    }]
 			},
 	        {
@@ -54,5 +67,30 @@ Ext.define('AgencyCentral.view.front.Main', {
 	},
 	showRegister: function(button, data) {
 		Ext.widget('userRegister').show();
+	},
+	showLogout: function() {
+		Ext.Msg.show({
+		    title:'Logout?',
+		    msg: 'Are you sure you want to logout?',
+		    buttons: Ext.Msg.YESNO,
+		    icon: Ext.Msg.QUESTION,
+		    fn: function(btn, text) {
+				if(btn == 'yes'){
+					Ext.getCmp('frontController').logout();
+				}
+				return false;
+			}
+		});
+	},
+	arrangeToolbar: function(user) {
+		if(user){
+			Ext.get('loginButton').hide();
+			Ext.get('registerButton').hide();
+			Ext.get('logoutButton').show();
+		}else{
+			Ext.get('loginButton').show();
+			Ext.get('registerButton').show();
+			Ext.get('logoutButton').hide();
+		}
 	}
 });

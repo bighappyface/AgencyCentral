@@ -11,8 +11,16 @@ Ext.define('AgencyCentral.controller.Agency', {
 	init: function() {
 		this.control({
 			'agencyList': {
-				itemclick: this.updateAgencyDetails,
-				itemdblclick: this.editAgency
+				itemclick: this.updateAgencyDetails
+			},
+			'#agencyEditButton': {
+				click: this.editAgency
+			},
+			'#agencyRefreshButton': {
+				click: this.refreshAgency
+			},
+			'#agencyEdit': {
+				close: this.refreshAgency
 			}
 		});
 	},
@@ -22,8 +30,18 @@ Ext.define('AgencyCentral.controller.Agency', {
 	    tabs.setActiveTab( tabs.child('#agencyInfoPanel') );
 	    (record.data.users) ? users.tab.show() : users.tab.hide();
 		Ext.getCmp('agencyInfoPanel').updateDetail(record.data);
+		if(record.data.allowEdit){
+			Ext.getCmp('agencyEditButton').enable();
+		}else{
+			Ext.getCmp('agencyEditButton').disable();
+		}
+		
 	},
-	editAgency: function(grid, record) {
-		Ext.widget('agencyEdit').down('form').loadRecord(record);
+	editAgency: function() {
+		var model = Ext.getCmp('agencyList').getSelectionModel().getLastSelected();
+		Ext.widget('agencyEdit').down('form').loadRecord( model );
+	},
+	refreshAgency: function() {
+		Ext.getCmp('agencyList').getStore().load();
 	}
 });

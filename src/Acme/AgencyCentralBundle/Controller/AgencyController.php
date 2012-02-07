@@ -7,8 +7,10 @@ use Acme\AgencyCentralBundle\Document\User;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Response;
+use Acme\AgencyCentralBundle\Form\Type\AgencyType;
+use Acme\AgencyCentralBundle\Form\Model as FormModel;
 
 /**
   * @Route("/agency")
@@ -25,29 +27,42 @@ extends AbstractController
 		
 	}
 	/**
+	* @Route("/update")
+	* @Method({"POST"})
+	*/
+	public function updateAction()
+	{
+		$result = array('success' => false, 'field' => array());
+		$form = $this->createForm(new AgencyType(), new Agency());
+		$form->bindRequest($this->getRequest());
+		if ($form->isValid()) {
+			$formAgency = $form->getData();
+			$this->getDm()->persist($formAgency);
+			$this->getDm()->flush();
+			$result['success'] = true;
+		}else{
+			$formData = $form->getData();
+			die(var_dump($form->getErrors()));
+		}
+		return $this->jsonResponse($result);
+	}
+	/**
 	 * @Route("/list")
 	 */
 	public function listAction()
 	{
-		$agencies = $this->getRepo()->findAll();
-		
-	    if (!$agencies) {
-	        throw $this->createNotFoundException('No agencies found');
-	    }
-	    $agencies = $this->prepareMongoDataForJson($agencies);
+	    $agencies = $this->prepareMongoDataForJson( $this->getRepo()->findAll() );
 	    $sessionUser = $this->getRequest()->getSession()->get('user');
 	    if ($sessionUser) {
 	    	$userRepo = $this->getDm()
 	    					 ->getRepository('AcmeAgencyCentralBundle:User');
 		    foreach($agencies as &$agency){
+		    	$agency['allowEdit'] = ($sessionUser->getAgency() == $agency['id']);
 		    	$users = $userRepo->findByAgency($agency['id']);
 		    	if($users->count() > 0){
-		    		$users = $this->prepareMongoDataForJson($users);
-		    		foreach($users as &$user){
-		    			$user['allowEdit'] = ($sessionUser->getAgency() == $agency['id']);
-		    			unset($user['password']);
+		    		foreach($users as $user){
+		    			$agency['users'][] = $user->toArray();
 		    		}
-		    		$agency['users'] = $users;
 		    	}
 		    }
 	    }

@@ -101,13 +101,7 @@ extends AbstractController
 		if($this->getRequest()->getSession()->get('user') != null){
 			$users = $this->getRepo()->findAll();
 			while($users->hasNext()){
-				$itemArr = (array) $users->getNext();
-				$itemArrFinal = array();
-				foreach($itemArr as $k => $v){
-					$k = \trim(\str_replace('*', '', $k));
-					$itemArrFinal[$k] = $v;
-				}
-				$out[] = $itemArrFinal;
+				$out[] = $users->getNext()->toArray();
 			}
 		}
 	    return $this->jsonResponse($out);

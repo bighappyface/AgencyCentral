@@ -4,7 +4,6 @@ namespace Acme\AgencyCentralBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilder;
-use Acme\AgencyCentralBundle\Document\Agency;
 
 class UserType
 extends AbstractType

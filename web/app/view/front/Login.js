@@ -47,7 +47,6 @@ Ext.define('AgencyCentral.view.front.Login', {
               	                	waitMsg: 'Logging in...',
               	                    success: function(form, action) {
               	                    	Ext.getCmp('userLoginWindow').close();
-              	                    	Ext.Msg.alert('Success', 'You have successfully logged in');
               	                    }
               	                });
               	            }

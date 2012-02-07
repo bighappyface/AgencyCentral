@@ -22,7 +22,13 @@ Ext.define('AgencyCentral.controller.Front', {
 			'#logoutButton': {
 				click: this.showLogout
 			},
+			'#registerButton': {
+				click: this.showRegister
+			},
 			'#userLoginWindow': {
+				close: this.checkLogin
+			},
+			'#userRegisterWindow': {
 				close: this.checkLogin
 			}
 		});
@@ -70,10 +76,12 @@ Ext.define('AgencyCentral.controller.Front', {
 			Ext.getCmp('loginButton').hide();
 			Ext.getCmp('registerButton').hide();
 			Ext.getCmp('logoutButton').show();
+			Ext.getCmp('toolbarText').setText('Logged in as: ' + user.name);
 		}else{
 			Ext.getCmp('loginButton').show();
 			Ext.getCmp('registerButton').show();
 			Ext.getCmp('logoutButton').hide();
+			Ext.getCmp('toolbarText').setText('Please Login or Register');
 		}
 	}
 });

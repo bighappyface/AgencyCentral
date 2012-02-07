@@ -17,5 +17,10 @@ Ext.define('AgencyCentral.view.front.Toolbar', {
         id: 'logoutButton',
         scope: this,
         iconCls: 'icon-disconnect',
+    },
+    { xtype: 'tbseparator' },
+    {
+    	xtype: 'tbtext',
+    	id: 'toolbarText',
     }]
 });

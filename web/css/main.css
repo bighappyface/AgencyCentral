@@ -3,3 +3,7 @@
 .icon-lock{background-image: url(img/icons/lock.png);}
 .icon-user-add{background-image: url(img/icons/user_add.png);}
 .icon-disconnect{background-image: url(img/icons/disconnect.png);}
+.icon-agency-edit{background-image: url(img/icons/report_edit.png);}
+.agencyName{ font-size: 20px; border-bottom: 1px solid #99BCE8; padding-bottom: 5px; margin-bottom:10px; color:#04408C; }
+.agencyDetail{ font-size: 14px; border-bottom: 1px dashed #99BCE8; padding: 3px; }
+.agencyDetail strong{ color:#4C4C4C; display: inline-block; width: 15%; text-align:right; font-weight: bold; margin-right: 10px; }

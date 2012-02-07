@@ -3,9 +3,9 @@ Ext.define('AgencyCentral.view.front.Main', {
 	alias: 'widget.frontMain',
 	initComponent: function() {
 		this.title = 'Agency Central';
-		this.layout = {
-			type: 'border',
-		};
+		this.layout = 'border';
+		this.frame = true;
+		this.style = 'margin:0 auto 0 auto !important; width:800px !important; height: 600px !important;',
 	    this.items = [
 			{
 				region: 'north',

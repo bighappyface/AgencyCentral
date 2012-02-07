@@ -4,13 +4,8 @@ Ext.define('AgencyCentral.view.front.Main', {
 	initComponent: function() {
 		this.title = 'Agency Central';
 		this.layout = 'border';
+		this.bodyPadding = '5';
 	    this.items = [
-			{
-				region: 'north',
-			    xtype: 'frontToolbar',
-			    id: 'topToolbar',
-			    split: true,
-			},
 	        {
 	        	region: 'west',
 	        	xtype: 'agencyList',
@@ -28,6 +23,12 @@ Ext.define('AgencyCentral.view.front.Main', {
 		        ]
 	        }
 	    ];
+	    this.dockedItems = [
+  			{
+  			    xtype: 'frontToolbar',
+  			    id: 'topToolbar',
+  			}
+  	    ];
 		this.callParent(arguments);
 	}
 });

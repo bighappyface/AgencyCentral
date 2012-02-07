@@ -58,23 +58,22 @@ extends AbstractController
 	    					 ->getRepository('AcmeAgencyCentralBundle:User');
 		    foreach($agencies as &$agency){
 		    	$agency['allowEdit'] = ($sessionUser->getAgency() == $agency['id']);
-		    	$users = $userRepo->findByAgency($agency['id']);
-		    	if($users->count() > 0){
-		    		foreach($users as $user){
-		    			$agency['users'][] = $user->toArray();
-		    		}
-		    	}
 		    }
 	    }
 	    return $this->jsonResponse($agencies);
 	}
     /**
-      * @Route("/", defaults={"id" = 1})
+      * @Route("/", defaults={"id" = 0})
  	  * @Route("/{id}")
  	  * @Template()
       */
     public function indexAction($id)
     {
-	    die('get agency');
+	    $agency = array();
+    	if($id){
+    		$agency = $this->getRepo()->find($id);
+    		$agency = ($agency) ? $agency : array();
+    	}
+    	return $this->jsonResponse($agency);
     }
 }

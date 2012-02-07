@@ -93,17 +93,21 @@ extends AbstractController
     	return $this->jsonResponse($result);
 	}
 	/**
-	 * @Route("/list")
+	 * @Route("/list", defaults={"agency" = 0})
+	 * @Route("/list/{agency}")
 	 */
-	public function listAction()
+	public function listAction($agency)
 	{
 		$out = array();
-		if($this->getRequest()->getSession()->get('user') != null){
-			$users = $this->getRepo()->findAll();
-			while($users->hasNext()){
-				$out[] = $users->getNext()->toArray();
+		if($agency){
+			if($this->getRequest()->getSession()->get('user') != null){
+				$users = $this->getRepo()->findByAgency($agency);
+				while($users->hasNext()){
+					$out[] = $users->getNext()->toArray();
+				}
 			}
 		}
+		
 	    return $this->jsonResponse($out);
 	}
     /**
@@ -115,12 +119,17 @@ extends AbstractController
     	return $this->render('AcmeAgencyCentralBundle:User:register.html.twig', array('form' => $form->createView()));
     }
     /**
-     * @Route("/", defaults={"id" = 1})
+     * @Route("/", defaults={"id" = 0})
      * @Route("/{id}")
      * @Template()
      */
     public function indexAction($id)
     {
-    	die('get user');
+    	$user = array();
+    	if($id){
+    		$user = $this->getRepo()->find($id);
+    		$user = ($user) ? $user : array();
+    	}
+    	return $this->jsonResponse($user);
     }
 }

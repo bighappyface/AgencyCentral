@@ -10,10 +10,11 @@ Ext.define('AgencyCentral.view.agency.Info', {
         '<p class="agencyDetail"><strong>Address:</strong> {address}</p>',
         '<p class="agencyDetail"><strong>City:</strong> {city}</p>',
         '<p class="agencyDetail"><strong>State:</strong> {state}</p>',
-        '<p class="agencyDetail"><strong>ZIP Code:</strong> {zip}</p>',
+        '<p class="agencyDetail"><strong>ZIP Code:</strong> {zip}</p>'
     ],
     startingMarkup: 'Please select an agency to see details',
     bodyPadding: 5,
+    autoScroll: true,
 	initComponent: function() {
 		this.tpl = Ext.create('Ext.Template', this.tplMarkup);
         this.html = this.startingMarkup;
@@ -29,10 +30,6 @@ Ext.define('AgencyCentral.view.agency.Info', {
             	    	id: 'agencyEditButton',
             	    	iconCls: 'icon-agency-edit',
             	    	disabled:true
-            	    },
-            	    {
-            	    	text: 'Refresh',
-            	    	id: 'agencyRefreshButton'
             	    }
             	]
             }

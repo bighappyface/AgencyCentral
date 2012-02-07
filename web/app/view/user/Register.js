@@ -23,7 +23,7 @@ Ext.define('AgencyCentral.view.user.Register', {
 		    	buttons: [
 	      		    {
 	          	    	text: 'Register',
-	          	    	formBind: true, //only enabled once the form is valid
+	          	    	formBind: true,
 	          	        disabled: true,
 	          	        handler: function() {
 	          	            var form = this.up('form').getForm();
@@ -35,7 +35,7 @@ Ext.define('AgencyCentral.view.user.Register', {
 	          	                    	Ext.Msg.alert('Success', 'You have successfully registered');
 	          	                    },
 	          	                    error: function(form, action) {
-	          	                    	Ext.Msg.alert('Success', 'An Error Occurred');
+	          	                    	Ext.Msg.alert('Error', 'An Error Occurred');
 	          	                    }
 	          	                });
 	          	            }

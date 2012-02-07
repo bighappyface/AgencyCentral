@@ -7,6 +7,5 @@ Ext.define('AgencyCentral.store.Agencies', {
         reader: {
             type: 'json'
         }
-    },
-    autoLoad: true
+    }
 });

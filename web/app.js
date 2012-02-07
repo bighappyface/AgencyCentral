@@ -8,6 +8,13 @@ Ext.application({
         'Agency',
     ],
     launch: function() {
-		Ext.getCmp('frontMain').checkLogin();
+    	Ext.create('Ext.container.Viewport', {
+            layout: 'fit',
+            items: [
+                {
+                    xtype: 'frontMain',
+                }
+            ]
+        });
     }
 });

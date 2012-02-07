@@ -10,7 +10,6 @@ Ext.application({
     launch: function() {
     	Ext.create('Ext.container.Viewport', {
             layout: 'fit',
-            padding: '25 0 0 0',
             items: [
                 {
                     xtype: 'frontMain',

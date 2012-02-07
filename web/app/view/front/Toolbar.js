@@ -7,15 +7,13 @@ Ext.define('AgencyCentral.view.front.Toolbar', {
         iconCls: 'icon-lock',
         hidden: true
     }, {
-        text: 'Register',
+        text: 'Register User',
         id: 'registerButton',
-        scope: this,
         iconCls: 'icon-user-add',
         hidden: true
     }, {
         text: 'Logout',
         id: 'logoutButton',
-        scope: this,
         iconCls: 'icon-disconnect',
     },
     { xtype: 'tbseparator' },

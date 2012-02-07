@@ -15,7 +15,6 @@ Ext.define('AgencyCentral.view.front.Login', {
 		    	errorReader: Ext.create('Ext.data.reader.Json', {
 		            model: 'AgencyCentral.model.FieldError',
 		            record : 'field',
-		            root: 'errors'
 		        }),
                 bodyPadding: 10,
                 border: false,

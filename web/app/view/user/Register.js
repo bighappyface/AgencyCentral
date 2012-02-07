@@ -2,7 +2,7 @@ Ext.define('AgencyCentral.view.user.Register', {
 	extend: 'Ext.window.Window',
 	alias: 'widget.userRegister',
 	id: 'userRegisterWindow',
-	title: 'Register',
+	title: 'Register User',
 	layout: 'fit',
 	modal: true,
     draggable: false,

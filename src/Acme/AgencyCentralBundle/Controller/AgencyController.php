@@ -27,9 +27,9 @@ extends AbstractController
 		
 	}
 	/**
-	* @Route("/update")
-	* @Method({"POST"})
-	*/
+	 * @Route("/update")
+	 * @Method({"POST"})
+	 */
 	public function updateAction()
 	{
 		$result = array('success' => false, 'field' => array());
@@ -42,7 +42,6 @@ extends AbstractController
 			$result['success'] = true;
 		}else{
 			$formData = $form->getData();
-			die(var_dump($form->getErrors()));
 		}
 		return $this->jsonResponse($result);
 	}

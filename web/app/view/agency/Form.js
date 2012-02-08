@@ -3,6 +3,13 @@ Ext.define('AgencyCentral.view.agency.Form', {
 	alias: 'widget.agencyForm',
 	bodyPadding: 10,
     border: false,
+    width:400,
+    defaults: {
+        anchor: '100%'
+    },
+    fieldDefaults: {
+        msgTarget: 'side',
+    },
 	initComponent: function() {
 		this.items = [
 			{
@@ -32,31 +39,36 @@ Ext.define('AgencyCentral.view.agency.Form', {
 			    xtype: 'textfield',
 			    id: 'phone',
 			    name : 'agency[phone]',
-			    fieldLabel: 'Phone'
+			    fieldLabel: 'Phone',
+			    allowBlank: false
 			},
 			{
 				xtype: 'textfield',
 				id: 'address',
 				name: 'agency[address]',
 				fieldLabel: 'Address',
+				allowBlank: false
 			},
 			{
 				xtype: 'textfield',
 				id: 'city',
 				name: 'agency[city]',
 				fieldLabel: 'City',
+				allowBlank: false
 			},
 			{
 				xtype: 'textfield',
 				id: 'state',
 				name: 'agency[state]',
 				fieldLabel: 'State',
+				allowBlank: false
 			},
 			{
 				xtype: 'textfield',
 				id: 'zip',
 				name: 'agency[zip]',
-				fieldLabel: 'ZIP Code'
+				fieldLabel: 'ZIP Code',
+				allowBlank: false
 			},
 			{
 				xtype: 'hiddenfield',

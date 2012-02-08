@@ -12,10 +12,6 @@ Ext.define('AgencyCentral.controller.Front', {
 	init: function() {
 		this.checkLogin();
 		this.control({
-			'userList': {
-				itemclick: this.updateUserDetails,
-				itemdblclick: this.editUser
-			},
 			'#loginButton': {
 				click: this.showLogin
 			},
@@ -32,6 +28,7 @@ Ext.define('AgencyCentral.controller.Front', {
 				close: this.checkLogin
 			}
 		});
+		this.addEvents('resetUserDetails');
 	},
 	checkLogin: function() {
 		var c = this;
@@ -43,6 +40,7 @@ Ext.define('AgencyCentral.controller.Front', {
 		});
 	},
 	logout: function() {
+		this.fireEvent('resetUserDetails');
 		var c = this;
 		this.getModel('Logout').load(0, {
 			success: function(model) {

@@ -1,8 +1,8 @@
 Ext.define('AgencyCentral.model.User', {
 	extend: 'Ext.data.Model',
-	fields: ['id','name','email','agency','allowEdit'],
+	fields: ['id','agency','name','email','phone','address','city','state','zip',,'allowEdit'],
 	proxy: {
-        type: 'ajax',
+        type: 'rest',
         url : '/user'
     }
 });

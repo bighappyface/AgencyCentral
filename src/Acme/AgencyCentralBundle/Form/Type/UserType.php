@@ -10,6 +10,7 @@ extends AbstractType
 {
 	public function buildForm(FormBuilder $builder, array $options)
 	{
+		$builder->add('id', 'text');
 		$builder->add('name', 'text');
 		$builder->add('email', 'email');
 		$builder->add('password', 'repeated', array(
@@ -23,6 +24,11 @@ extends AbstractType
 		    'label' => 'Agency',
 			'empty_value' => 'Choose and Agency'
 		));
+		$builder->add('phone', 'text');
+		$builder->add('address', 'text');
+		$builder->add('city', 'text');
+		$builder->add('state', 'text');
+		$builder->add('zip', 'text');
 	}
 	
 	public function getDefaultOptions(array $options)

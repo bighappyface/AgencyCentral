@@ -14,88 +14,36 @@ class User
 extends Document
 {
 	/**
-	 * @MongoDB\Id
-	 */
-	protected $id;
-	/**
 	* @MongoDB\String
 	*/
 	protected $agency;
 	/**
 	 * @MongoDB\String
 	 */
-	protected $name;
-	/**
-	 * @MongoDB\String
-	 * @Assert\NotBlank()
-	 * @Assert\Email()
-	 */
-	protected $email;
-	/**
-	 * @MongoDB\String
-	 * @Assert\NotBlank()
-	 */
 	private $password;
     /**
-     * Get id
+     * Set agency
      *
-     * @return id $id
+     * @param string $agency
      */
-    public function getId()
-    {
-        return $this->id;
-    }
-    
-    public function getAgency()
-    {
-    	return $this->agency;
-    }
-    
     public function setAgency(Agency $agency)
     {
     	$this->agency = $agency->getId();
     }
     /**
-     * Set name
+     * Get agency
      *
-     * @param string $name
+     * @return string $agency
      */
-    public function setName($name)
+    public function getAgency()
     {
-        $this->name = $name;
+    	return $this->agency;
     }
     /**
-     * Get name
+     * Set password
      *
-     * @return string $name
+     * @param string $password
      */
-    public function getName()
-    {
-        return $this->name;
-    }
-    /**
-     * Set email
-     *
-     * @param string $email
-     */
-    public function setEmail($email)
-    {
-    	$this->email = $email;
-    }
-    /**
-     * Get email
-     *
-     * @return string $email
-     */
-    public function getEmail()
-    {
-    	return $this->email;
-    }
-    /**
-    * Set password
-    *
-    * @param string $password
-    */
     public function setPassword($password)
     {
     	$this->password = \md5($password);

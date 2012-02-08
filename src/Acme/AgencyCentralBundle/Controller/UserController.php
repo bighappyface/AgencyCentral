@@ -10,6 +10,8 @@ use Acme\AgencyCentralBundle\Form\Type\RegistrationType;
 use Acme\AgencyCentralBundle\Form\Model\Registration;
 use Acme\AgencyCentralBundle\Form\Type\LoginType;
 use Acme\AgencyCentralBundle\Form\Model\Login;
+use Acme\AgencyCentralBundle\Form\Type\UserType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
   * @Route("/user")
@@ -97,6 +99,29 @@ extends AbstractController
     	}
     	return $this->jsonResponse($result);
 	}
+	/**
+	 * @Route("/update")
+	 * 
+	 */
+	public function updateAction()
+	{
+		$form = $this->createForm(new UserType(), new User());
+		if($this->getRequest()->getMethod() == 'POST'){
+			$result = array('success' => false, 'field' => array());
+			$form->bindRequest($this->getRequest());
+			if ($form->isValid()) {
+				$formUser = $form->getData();
+				$this->getDm()->persist($formUser);
+				$this->getDm()->flush();
+				$result['success'] = true;
+			}else{
+				die(var_dump( $form->isValid() ));
+				$formData = $form->getData();
+			}
+			return $this->jsonResponse($result);
+		}
+		return $this->render('AcmeAgencyCentralBundle:User:update.html.twig', array('form' => $form->createView()));
+	}
     /**
 	 * @Route("/register")
 	 */
@@ -115,7 +140,14 @@ extends AbstractController
     	$user = array();
     	if($id){
     		$user = $this->getRepo()->find($id);
-    		$user = ($user) ? $user->toArray() : array();
+    		if($user){
+    			$user = $user->toArray();
+    			$user['allowEdit'] = false;
+    			$sessionUser = $this->getRequest()->getSession()->get('user');
+    			if($sessionUser){
+    				$user['allowEdit'] = ($sessionUser->getAgency() == $user['agency']);
+    			}
+    		}
     	}
     	return $this->jsonResponse($user);
     }

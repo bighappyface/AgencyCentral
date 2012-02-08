@@ -22,6 +22,13 @@ Ext.define('AgencyCentral.view.user.Register', {
 		            model: 'AgencyCentral.model.FieldError',
 		            record : 'field'
 		        }),
+		        width:400,
+		        defaults: {
+		            anchor: '100%'
+		        },
+		        fieldDefaults: {
+		            msgTarget: 'side',
+		        },
 		        items: [
           		    {
               	    	xtype: 'textfield',

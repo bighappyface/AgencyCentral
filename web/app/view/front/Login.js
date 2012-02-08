@@ -18,6 +18,13 @@ Ext.define('AgencyCentral.view.front.Login', {
 		        }),
                 bodyPadding: 10,
                 border: false,
+                width:400,
+                defaults: {
+                    anchor: '100%'
+                },
+                fieldDefaults: {
+                    msgTarget: 'side',
+                },
                 items: [
                     {
                         xtype: 'textfield',

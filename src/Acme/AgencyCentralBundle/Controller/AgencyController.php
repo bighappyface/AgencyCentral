@@ -52,14 +52,6 @@ extends AbstractController
 	public function listAction()
 	{
 	    $agencies = $this->prepareMongoDataForJson( $this->getRepo()->findAll() );
-	    $sessionUser = $this->getRequest()->getSession()->get('user');
-	    if ($sessionUser) {
-	    	$userRepo = $this->getDm()
-	    					 ->getRepository('AcmeAgencyCentralBundle:User');
-		    foreach($agencies as &$agency){
-		    	$agency['allowEdit'] = ($sessionUser->getAgency() == $agency['id']);
-		    }
-	    }
 	    return $this->jsonResponse($agencies);
 	}
     /**
@@ -72,7 +64,21 @@ extends AbstractController
 	    $agency = array();
     	if($id){
     		$agency = $this->getRepo()->find($id);
-    		$agency = ($agency) ? $agency->toArray() : array();
+    		if($agency){
+    			$agency = $agency->toArray();
+    			$agency['allowEdit'] = false;
+    			$sessionUser = $this->getRequest()->getSession()->get('user');
+    			if($sessionUser){
+    				$agency['allowEdit'] = ($sessionUser->getAgency() == $agency['id']);
+    				$userRepo = $this->getDm()->getRepository('AcmeAgencyCentralBundle:User');
+    				$users = $userRepo->findByAgency($agency['id']);
+    				if($users->count() > 0){
+    					while($users->hasNext()){
+    						$agency['users'][] = $users->getNext()->toArray();
+    					}
+    				}
+    			}
+    		}
     	}
     	return $this->jsonResponse($agency);
     }

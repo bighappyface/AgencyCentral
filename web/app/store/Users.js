@@ -2,11 +2,11 @@ Ext.define('AgencyCentral.store.Users', {
 	extend: 'Ext.data.Store',
 	model: 'AgencyCentral.model.User',
 	proxy: {
-        type: 'ajax',
-        url: '/user/list',
+        type: 'rest',
+        url: '/agency',
         reader: {
-            type: 'json'
+            type: 'json',
+            root: 'users'
         }
-    },
-    autoLoad: true
+    }
 });

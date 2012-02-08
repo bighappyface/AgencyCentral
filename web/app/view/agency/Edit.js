@@ -15,6 +15,7 @@ Ext.define('AgencyCentral.view.agency.Edit', {
 		this.items = [
 		    {
 		    	xtype: 'agencyForm',
+		    	id: 'agencyEditForm',
 		    	url: '/agency/update',
 		    	errorReader: Ext.create('Ext.data.reader.Json', {
 		            model: 'AgencyCentral.model.FieldError',
@@ -27,6 +28,7 @@ Ext.define('AgencyCentral.view.agency.Edit', {
 	          	        disabled: true,
 	          	        handler: function() {
 	          	            var form = this.up('form').getForm();
+	          	            var button = this;
 	          	            if (form.isValid()) {
 	          	                form.submit({
 	          	                	waitMsg: 'Updating...',

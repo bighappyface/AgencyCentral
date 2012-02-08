@@ -206,6 +206,7 @@ if (ini_get('session.auto_start')) {
                     </ul>
                 </div>
             </div>
+            </div>
         </div>
         <div class="version">Symfony Standard Edition</div>
     </body>

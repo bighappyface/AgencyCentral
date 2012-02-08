@@ -1,6 +1,7 @@
 Ext.define('AgencyCentral.view.agency.Info', {
 	extend: 'Ext.panel.Panel',
 	alias: 'widget.agencyInfo',
+	id: 'agencyInfoPanel',
 	title: 'Details',
 	tplMarkup: [
         '<h1 class="agencyName">{name}</h1>',

@@ -97,24 +97,6 @@ extends AbstractController
     	}
     	return $this->jsonResponse($result);
 	}
-	/**
-	 * @Route("/list", defaults={"agency" = 0})
-	 * @Route("/list/{agency}")
-	 */
-	public function listAction($agency)
-	{
-		$out = array();
-		if($agency){
-			if($this->getRequest()->getSession()->get('user') != null){
-				$users = $this->getRepo()->findByAgency($agency);
-				while($users->hasNext()){
-					$out[] = $users->getNext()->toArray();
-				}
-			}
-		}
-		
-	    return $this->jsonResponse($out);
-	}
     /**
 	 * @Route("/register")
 	 */

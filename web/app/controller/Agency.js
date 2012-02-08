@@ -1,5 +1,6 @@
 Ext.define('AgencyCentral.controller.Agency', {
 	extend: 'Ext.app.Controller',
+	id: 'agencyController',
 	models: ['Agency'],
 	views: [
 	    'agency.List',
@@ -8,40 +9,47 @@ Ext.define('AgencyCentral.controller.Agency', {
 	    'agency.Info',
 	    'agency.Users',
 	],
+	currAgency: null,
 	init: function() {
+		this.addListener('updateAgency', this.fauxUpdate);
 		this.control({
 			'agencyList': {
-				itemclick: this.updateAgencyDetails
+				itemclick: this.selectAgency
 			},
 			'#agencyEditButton': {
 				click: this.editAgency
-			},
-			'#agencyRefreshButton': {
-				click: this.refreshAgency
-			},
-			'#agencyEdit': {
-				close: this.refreshAgency
 			}
 		});
 	},
-	updateAgencyDetails: function(grid, record) {
-		var tabs = Ext.getCmp('agencyTabs');
-		var users = tabs.child('#agencyUsersPanel');
-	    tabs.setActiveTab( tabs.child('#agencyInfoPanel') );
-	    (record.data.users) ? users.tab.show() : users.tab.hide();
-		Ext.getCmp('agencyInfoPanel').updateDetail(record.data);
-		if(record.data.allowEdit){
-			Ext.getCmp('agencyEditButton').enable();
-		}else{
-			Ext.getCmp('agencyEditButton').disable();
-		}
-		
+	fauxUpdate: function() {
+		console.log('update agency event');
+	},
+	selectAgency: function(grid, record) {
+		return this.updateAgencyDetails(record.data.id);
+	},
+	updateAgencyDetails: function(id) {
+		var id = (!id) ? this.currAgency.data.id : id;
+		var c = this;
+		this.getModel('Agency').load(id, {
+			success: function(model) {
+				c.currAgency = model;
+				var tabs = Ext.getCmp('agencyTabs');
+				var infoPanel = tabs.child('#agencyInfoPanel');
+				infoPanel.updateDetail(model.data);
+				tabs.setActiveTab( infoPanel );
+				var usersPanel = tabs.child('#agencyUsersPanel');
+				(model.data.users) ? usersPanel.tab.show() : usersPanel.tab.hide();
+				var editButton = Ext.getCmp('agencyEditButton').enable();
+				if(model.data.allowEdit){
+					editButton.enable();
+				}else{
+					editButton.disable();
+				}
+				Ext.getCmp('userList').getStore().loadData(model.data.users);
+			}
+		});
 	},
 	editAgency: function() {
-		var model = Ext.getCmp('agencyList').getSelectionModel().getLastSelected();
-		Ext.widget('agencyEdit').down('form').loadRecord( model );
-	},
-	refreshAgency: function() {
-		Ext.getCmp('agencyList').getStore().load();
+		Ext.widget('agencyEdit').down('form').loadRecord( this.currAgency );
 	}
 });

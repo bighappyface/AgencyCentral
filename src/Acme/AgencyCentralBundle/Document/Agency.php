@@ -1,12 +1,14 @@
 <?php
 namespace Acme\AgencyCentralBundle\Document;
 
+use Acme\AgencyCentralBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
 * @MongoDB\Document(collection="agency")
 */
 class Agency
+extends Document
 {
 	/**
 	 * @MongoDB\Id

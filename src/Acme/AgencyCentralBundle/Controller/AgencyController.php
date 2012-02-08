@@ -72,7 +72,7 @@ extends AbstractController
 	    $agency = array();
     	if($id){
     		$agency = $this->getRepo()->find($id);
-    		$agency = ($agency) ? $agency : array();
+    		$agency = ($agency) ? $agency->toArray() : array();
     	}
     	return $this->jsonResponse($agency);
     }

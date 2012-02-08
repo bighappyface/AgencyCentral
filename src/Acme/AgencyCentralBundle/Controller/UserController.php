@@ -40,6 +40,11 @@ extends AbstractController
 					if($user->getPassword() == $formData->getPassword()){
 						$this->getRequest()->getSession()->set('user', $user);
 						$result['success'] = true;
+					}else{
+						$result['field'] = array(
+		    		    	'id' => 'password',
+		    		    	'msg' => 'Incorrect Password'
+						);
 					}
 				}
 			}
@@ -128,7 +133,7 @@ extends AbstractController
     	$user = array();
     	if($id){
     		$user = $this->getRepo()->find($id);
-    		$user = ($user) ? $user : array();
+    		$user = ($user) ? $user->toArray() : array();
     	}
     	return $this->jsonResponse($user);
     }

@@ -1,6 +1,7 @@
 <?php
 namespace Acme\AgencyCentralBundle\Document;
 
+use Acme\AgencyCentralBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Symfony\Bundle\DoctrineMongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 * @MongoDBUnique(path="email")
 */
 class User
+extends Document
 {
 	/**
 	 * @MongoDB\Id
@@ -106,19 +108,5 @@ class User
     public function getPassword()
     {
     	return $this->password;
-    }
-    /**
-     * To Array
-     * 
-	 * @return array
-     */
-    public function toArray()
-    {
-    	$ref = new \ReflectionClass($this);
-    	$arr = array();
-    	foreach($ref->getProperties( \ReflectionProperty::IS_PROTECTED ) as $prop){
-    		$arr[ $prop->getName() ] = $this->{'get' . \ucfirst($prop->getName())}();
-    	}
-    	return $arr;
     }
 }
